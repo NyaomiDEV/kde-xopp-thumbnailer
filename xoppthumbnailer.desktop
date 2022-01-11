@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+Name=Xournal++ note files
+Name[x-test]=xxXournal++ note filesxx
+
+X-KDE-ServiceTypes=ThumbCreator
+MimeType=application/x-xoj;application/x-xojpp;application/x-xopp;application/x-xopt;
+
+X-KDE-Library=xoppthumbnailer
+CacheThumbnail=true
