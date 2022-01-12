@@ -25,16 +25,18 @@ bool XoppThumbnailer::create(const QString& path, int width, int height, QImage&
     QDir directory(cacheDirectory);
     if (!directory.exists())
         directory.mkpath(".");
-    
-    if (!QFile::exists(thumbnailPath)){
-        QProcess *process = new QProcess();
-        process->setProcessChannelMode(QProcess::ForwardedChannels);
-        process->start("xournalpp", {path, "-i", thumbnailPath, "--export-range", "1"});
-        process->waitForFinished();
+
+    QProcess process;
+    process.setProcessChannelMode(QProcess::ForwardedChannels);
+    process.start("xournalpp", {path, "-i", thumbnailPath, "--export-range", "1", "--export-png-width", QString::number(width)});
+    process.waitForFinished();
+
+    if (QFile::exists(thumbnailPath)){
+        QFile thumbnailFile(thumbnailPath);
+        img = QImage(thumbnailPath).scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        thumbnailFile.remove();
     }
 
-    QFile thumbnailFile(thumbnailPath);
-    img = QImage(thumbnailPath).scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     return !img.isNull();
 }
 
